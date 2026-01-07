@@ -1,4 +1,4 @@
-<video id="video" autoplay playsinline></video>
+<video id="video" autoplay playsinline muted></video>
 <br>
 
 <button onclick="startCamera()">Start Camera</button>
@@ -8,7 +8,6 @@
 
 <br><br>
 
-
 <canvas id="canvas" style="display:none;"></canvas>
 <img id="photo">
 <script>
@@ -16,12 +15,21 @@ let stream;
 let mediaRecorder;
 let recordedChunks = [];
 
+// Start Camera
 async function startCamera() {
-    stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    });
-    document.getElementById('video').srcObject = stream;
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }, // back camera
+            audio: true
+        });
+        const video = document.getElementById('video');
+        video.srcObject = stream;
+        video.muted = true; // required for mobile autoplay
+        await video.play();
+    } catch(err) {
+        alert("Camera access failed: " + err);
+        console.error(err);
+    }
 }
 
 // 📸 Capture Photo
@@ -41,22 +49,38 @@ function takePhoto() {
 
 // 🎥 Record Video
 function startRecording() {
-    recordedChunks = [];
-    mediaRecorder = new MediaRecorder(stream);
+    if(!stream) { alert("Start camera first!"); return; }
 
-    mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+    recordedChunks = [];
+    try {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    } catch(e) {
+        alert("Video recording not supported on this device");
+        console.error(e);
+        return;
+    }
+
+    mediaRecorder.ondataavailable = e => {
+        if(e.data.size > 0) recordedChunks.push(e.data);
+    };
+
     mediaRecorder.start();
 }
 
+// Stop recording and download / preview
 function stopRecording() {
+    if(!mediaRecorder) return;
+
     mediaRecorder.stop();
     mediaRecorder.onstop = () => {
         const blob = new Blob(recordedChunks, { type: 'video/webm' });
-        const videoURL = URL.createObjectURL(blob);
-        window.open(videoURL);
+
+        // For Android / desktop
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+
+        // For iOS Safari (if webm fails, you may need mp4)
+        console.log("Recording complete. Size:", blob.size);
     };
 }
-
-    
 </script>
-
