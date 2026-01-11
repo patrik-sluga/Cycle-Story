@@ -1,0 +1,19 @@
+<!doctype html>
+<body>
+<button onclick="go()">GO</button>
+<pre id=o></pre>
+<script>
+function go(){
+  let n=0,lat=0,lon=0;
+  o.textContent="running…";
+  const id=navigator.geolocation.watchPosition(p=>{
+    lat+=p.coords.latitude;
+    lon+=p.coords.longitude;
+    n++;
+    o.textContent = (lat/n)+","+ (lon/n);
+    if(n===15) navigator.geolocation.clearWatch(id);
+  },e=>o.textContent=e.message,
+  {enableHighAccuracy:false,maximumAge:Infinity});
+}
+</script>
+</body>
