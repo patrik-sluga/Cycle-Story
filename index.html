@@ -11,6 +11,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     margin: 0;
     padding: 0;
+    color: #026A49 
   }
 
   
@@ -23,9 +24,7 @@
     color: #1f2937;
   }
 
-  * {
-  color: #026A49 !important;
-  }
+  
 
 
   .page {
@@ -472,6 +471,7 @@
     .center-control {
       position: relative;
       z-index: 10;
+      color: #ffffff;
     }
 
     .btn-control-capture {
@@ -1461,30 +1461,30 @@
 
     <!-- Bottom Controls Section -->
     <div class="bottom-controls-container">
-      <!-- Left Side: Stop Button -->
-      <div class="side-control left-control" id="stopControl">
-        <button class="btn btn-control-stop" onclick="stopTimer()">
-          <i class="fas fa-stop"></i>
-          <span>Stop</span>
-        </button>
-      </div>
-      
-      <!-- Center: Capture Button -->
-      <div class="center-control">
-        <button class="btn btn-control-capture" onclick="showModal('captureModal')">
-          <i class="fas fa-camera"></i>
-          <span>Capture</span>
-        </button>
-      </div>
-      
-      <!-- Right Side: Start/Pause Button -->
-      <div class="side-control right-control" id="timerControl">
-        <button class="btn btn-control-start" onclick="toggleTimer()" id="timerToggleBtn">
-          <i class="fas fa-play"></i>
-          <span>Start</span>
-        </button>
-      </div>
-    </div>
+  <!-- Left Side: Stop Button -->
+  <div class="side-control left-control" id="stopControl">
+    <button class="btn btn-control-stop" onclick="stopTimer()" style="color: white;">
+      <i class="fas fa-stop" style="color: white;"></i>
+      <span style="color: white;">Stop</span>
+    </button>
+  </div>
+  
+  <!-- Center: Capture Button -->
+  <div class="center-control">
+    <button class="btn btn-control-capture" onclick="showModal('captureModal')" style="color: white;">
+      <i class="fas fa-camera " style="color: white;"></i>
+      <span" style="color: white;">Capture</span>
+    </button>
+  </div>
+  
+  <!-- Right Side: Start/Pause Button -->
+  <div class="side-control right-control" id="timerControl">
+    <button class="btn btn-control-start" onclick="toggleTimer()" id="timerToggleBtn" style="color: white;">
+      <i class="fas fa-play" style="color: white;"></i>
+      <span style="color: white;">Start</span>
+    </button>
+  </div>
+</div>
 
     
   </div>
