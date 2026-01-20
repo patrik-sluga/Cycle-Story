@@ -1,5 +1,5 @@
 # Cycle-Story
-###final project hci
+### final project hci
 
 ## Install procedure
 - Open next link in a browser: https://brainwreck6.github.io/Cycle-Story/CycleStory.html
