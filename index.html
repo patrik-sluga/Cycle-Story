@@ -2508,7 +2508,7 @@ async function initializeCamera() {
             updateCameraIcon();
         }
     } catch (error) {
-        console.error('Error accessing media devices:', error);
+        //console.error('Error accessing media devices:', error);
         
         // Fallback to default if specific facingMode fails
         if (error.name === 'OverconstrainedError') {
@@ -2665,7 +2665,7 @@ async function initializeCamera() {
         document.getElementById('stopAudioBtn').classList.remove('hidden');
       })
       .catch(error => {
-        console.error('Error accessing microphone:', error);
+        //console.error('Error accessing microphone:', error);
         //alert('Could not access microphone. Please check permissions.');
       });
   }
