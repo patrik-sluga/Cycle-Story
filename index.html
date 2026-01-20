@@ -1,0 +1,2811 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>CycleStory Prototype</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  * { 
+    box-sizing: border-box; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  
+
+  body {
+    background: linear-gradient(135deg, #d1fae5 0%, #dcfce7 25%, #ccfbf1 100%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #1f2937;
+  }
+
+  * {
+  color: #026A49 !important;
+  }
+
+
+  .page {
+    flex: 1;
+    padding: 20px;
+    display: none;
+    overflow-y: auto;
+    padding-bottom: 80px;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  /* Header Styles */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .header-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .header-subtitle {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .header-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s;
+  }
+
+  .header-btn:hover {
+    background: linear-gradient(135deg, #0da271 0%, #047857 100%);
+    transform: translateY(-1px);
+  }
+
+  .header-btn i {
+    font-size: 16px;
+  }
+
+  /* Card Styles */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .card-subtitle {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* Stats Cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #059669;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  /* Adventure Cards */
+  .adventure-card {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .adventure-pictures-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+    overflow-x: auto;
+}
+
+.adventure-small-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #f3f4f6;
+}
+
+  .adventure-image {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+  }
+
+/* Add styles for audio items */
+.audio-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+  .adventure-content {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .adventure-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .adventure-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .adventure-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .adventure-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .adventure-duration {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    color: #059669;
+    font-size: 14px;
+  }
+
+  .status-badge {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Button Styles */
+  .btn {
+    border: none;
+    border-radius: 16px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #0da271 0%, #047857 100%);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: #f0fdf4;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+  }
+
+  .btn-secondary:hover {
+    background: #dcfce7;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  }
+
+  .btn-outline {
+    background: white;
+    color: #059669;
+    border: 2px solid #059669;
+  }
+
+  .btn-outline:hover {
+    background: #f0fdf4;
+  }
+
+  /* Login Page */
+  .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .login-box {
+    background: white;
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 36px;
+  }
+
+  .login-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .login-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-label {
+    display: block;
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  }
+
+  /* Navbar */
+  #navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: white;
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+  }
+
+  .nav-btn {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 500;
+    flex: 1;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .nav-btn i {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .nav-btn.active {
+    color: #059669;
+  }
+
+  .nav-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 3px;
+  }
+
+  /* Timer Page */
+  .timer-display {
+    font-size: 64px;
+    font-weight: 800;
+    text-align: center;
+    color: #111827;
+    margin: 40px 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .control-btn {
+    height: 80px;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #d1fae5;
+  }
+
+  .control-btn i {
+    font-size: 28px;
+  }
+
+      /* Bottom Controls Container */
+    .bottom-controls-container {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    /* Center Capture Button */
+    .center-control {
+      position: relative;
+      z-index: 10;
+    }
+
+    .btn-control-capture {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      gap: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-control-capture:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-control-capture i {
+      font-size: 20px;
+    }
+
+    /* Side Controls (Stop and Start/Pause) */
+    .side-control {
+      position: absolute;
+      bottom: 10px; /* Positioned slightly above the capture button */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .left-control {
+      left: 20px;
+    }
+
+    .right-control {
+      right: 20px;
+    }
+
+    /* Stop Button Style */
+    .btn-control-stop {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      gap: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-control-stop:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-control-stop i {
+      font-size: 18px;
+    }
+
+    /* Start Button Style */
+    .btn-control-start {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      gap: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-control-start:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-control-start i {
+      font-size: 18px;
+    }
+
+    /* Pause Button Style */
+    .btn-control-pause {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      gap: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-control-pause:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-control-pause i {
+      font-size: 18px;
+    }
+
+    /* Adjust page padding to accommodate bottom controls */
+    .page {
+      padding-bottom: 120px;
+    }
+
+  /* Challenge Cards */
+  .challenge-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border: 1px solid #a7f3d0;
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .challenge-title {
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .challenge-description {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .challenge-progress {
+    height: 8px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+
+  .challenge-progress-bar {
+    height: 100%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 4px;
+  }
+
+  .challenge-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  /* Profile */
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+  }
+
+  .profile-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .profile-username {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 24px;
+  }
+
+  /* Form Styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+  }
+
+  /* Capture Options */
+  .capture-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .capture-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 2px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .capture-option:hover {
+    background: #f0fdf4;
+    border-color: #10b981;
+    transform: translateY(-4px);
+  }
+
+  .capture-option.active {
+    background: #f0fdf4;
+    border-color: #10b981;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+  }
+
+  .capture-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 24px;
+  }
+
+  .capture-label {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .capture-desc {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  /* Preview Area */
+  .preview-area {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 2px dashed #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .preview-placeholder {
+    text-align: center;
+    color: #6b7280;
+  }
+
+  .preview-placeholder i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #9ca3af;
+  }
+
+  .preview-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  .preview-content.active {
+    display: block;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .control-button {
+    flex: 1;
+    height: 56px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+
+  .control-button.primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .control-button.secondary {
+    background: #f0fdf4;
+    color: #059669;
+    border: 2px solid #a7f3d0;
+  }
+
+  .control-button.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+  }
+
+  /* Media Grid */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .media-item {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .media-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .media-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Audio Player */
+  .audio-player {
+    width: 100%;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .audio-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .audio-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .audio-details {
+    flex: 1;
+  }
+
+  .audio-title {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .audio-duration {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .audio-progress {
+    flex: 1;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .audio-progress-bar {
+    height: 100%;
+    background: #10b981;
+    width: 60%;
+  }
+
+  /* Utility Classes */
+  .text-center { text-align: center; }
+  .mb-4 { margin-bottom: 16px; }
+  .mb-8 { margin-bottom: 32px; }
+  .mt-4 { margin-top: 16px; }
+  .mt-8 { margin-top: 32px; }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-2 { gap: 8px; }
+  .gap-4 { gap: 16px; }
+  .w-full { width: 100%; }
+  .hidden { display: none; }
+
+    /* Simple Moment Detected Page */
+  .simple-moment-container {
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* Icon */
+  .simple-moment-icon {
+    width: 120px;
+    height: 120px;
+    margin: 40px auto 30px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    animation: simplePulse 2s infinite;
+  }
+
+  .simple-moment-icon i {
+    font-size: 56px;
+    color: white;
+  }
+
+  @keyframes simplePulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  /* Title */
+  .simple-moment-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  /* Description */
+  .simple-moment-description {
+    font-size: 18px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 60px;
+    max-width: 300px;
+  }
+
+  /* Capture Button Container */
+  .simple-capture-container {
+    margin-top: auto;
+    margin-bottom: 60px;
+    width: 100%;
+  }
+
+  /* Capture Button */
+  .simple-capture-btn {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: none;
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+
+  .simple-capture-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 45px rgba(59, 130, 246, 0.4);
+  }
+
+  .simple-capture-btn:active {
+    transform: scale(0.98);
+  }
+
+  .simple-capture-btn i {
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+
+  .simple-capture-btn span {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* Simple Video Modal */
+.video-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.video-container-small {
+  position: relative;
+  max-width: 400px;
+  width: 90%;
+  background: transparent;
+}
+
+.btn-close-video-small {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: white;
+  color: #333;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.btn-close-video-small:hover {
+  background: #f0f0f0;
+}
+
+/* Delete Button Styles */
+.journey-delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.journey-delete-btn:hover {
+    background: #dc2626;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.adventure-card {
+    position: relative; /* Important for absolute positioning of delete button */
+}
+
+  </style>
+  </head>
+
+  <body>
+
+  <!-- New Page HTML -->
+  <div id="momentDetected" class="page no-navbar">
+    <div class="header">
+      <button class="btn btn-secondary" onclick="showPage('timer')">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <div style="font-weight: 600; font-size: 18px;">Moment Detected</div>
+      <div style="width: 60px;"></div>
+    </div>
+
+    <div class="simple-moment-container">
+      <!-- Icon -->
+      <div class="simple-moment-icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+      
+      <!-- Title -->
+      <h1 class="simple-moment-title">Moment Point Detected</h1>
+      
+      <!-- Description -->
+      <p class="simple-moment-description">
+        You've reached a special location! Capture this moment.
+      </p>
+      
+      <!-- Capture Button in Center -->
+      <div class="simple-capture-container">
+        <button class="btn simple-capture-btn" onclick="captureMoment()">
+          <i class="fas fa-camera"></i>
+          <span>Capture Moment</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="login" class="page active no-navbar">
+    <div class="login-container">
+      <div class="login-box">
+        <div class="login-logo">
+          <i class="fas fa-bicycle"></i>
+        </div>
+        <h1 class="login-title">CycleStory</h1>
+        <p class="login-subtitle">Track your cycling adventures</p>
+        
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input type="email" class="input-field" placeholder="Enter your email" id="loginEmail" required>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <input type="password" class="input-field" placeholder="Enter your password" id="loginPassword" required>
+        </div>
+        
+        <button class="btn btn-primary w-full" onclick="login()">
+          <i class="fas fa-sign-in-alt"></i> Log In
+        </button>
+        
+        <p class="text-center mt-8" style="color: #6b7280; font-size: 14px;">
+          Don't have an account? <a href="#" style="color: #059669;">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="page">
+    <div class="header">
+      <div>
+        <div class="header-title">CycleStory</div>
+        <div class="header-subtitle">Track your cycling journeys</div>
+      </div>
+      <button class="header-btn" onclick="showPage('settings')">
+        <i class="fas fa-gear"></i>
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="homeJourneys">12</div>
+        <div class="stat-label">Journeys</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="homeTime">10h</div>
+        <div class="stat-label">Total Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="homeDistance">40km</div>
+        <div class="stat-label">Distance</div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">Recent Activity</div>
+      <div class="card-subtitle">Your latest cycling adventures</div>
+      
+      <div id="recentActivity">
+        <!-- Dynamic content will be added here -->
+      </div>
+    </div>
+
+    <div class="card" onclick="showPage('timer')">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-play" style="color: white; font-size: 24px;"></i>
+        </div>
+        <div id="rideBtnActive">
+          <div style="font-weight: 700; font-size: 18px;">Start New Ride</div>
+          <div style="color: #6b7280; font-size: 14px;">Begin tracking your adventure</div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- ADVENTURES -->
+  <div id="adventures" class="page">
+    <div class="header">
+      <div>
+        <div class="header-title">My Journeys</div>
+        <div class="header-subtitle">Track your cycling adventures</div>
+      </div>
+      <button class="header-btn" onclick="showModal('newJourneyModal')">
+        <i class="fas fa-plus"></i> New
+      </button>
+    </div>
+
+    <div id="journeysList">
+      <!-- Journeys will be dynamically added here -->
+    </div>
+  </div>
+
+  <!-- FRIENDS -->
+  <div id="friends" class="page">
+    <div class="header">
+      <div>
+        <div class="header-title">Friends</div>
+        <div class="header-subtitle">Connect with fellow cyclists</div>
+      </div>
+      <button class="header-btn" onclick="showModal('addFriendModal')">
+        <i class="fas fa-user-plus"></i> Add
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Active Challenges</div>
+      
+      <div class="challenge-card">
+        <div class="challenge-title">100km Challenge</div>
+        <div class="challenge-description">Complete 100km of cycling this month</div>
+        <div class="challenge-progress">
+          <div class="challenge-progress-bar" style="width: 60%;"></div>
+        </div>
+        <div class="challenge-meta">
+          <span>Progress: 60km</span>
+          <span>12 joined</span>
+        </div>
+      </div>
+      
+      <div class="challenge-card">
+        <div class="challenge-title">Weekend Warrior</div>
+        <div class="challenge-description">Cycle every weekend this month</div>
+        <div class="challenge-progress">
+          <div class="challenge-progress-bar" style="width: 75%;"></div>
+        </div>
+        <div class="challenge-meta">
+          <span>Progress: 3/4 weeks</span>
+          <span>8 joined</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Your Friends</div>
+      
+      <div id="friendsList">
+        <!-- Friends will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="page">
+    <div class="header">
+      <div>
+        <div class="header-title">Profile</div>
+        <div class="header-subtitle">Your stats and achievements</div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+      <div class="profile-avatar">
+        <i class="fas fa-user" id="profileAvatar"></i>
+      </div>
+      <div class="profile-name" id="profileName">Filip</div>
+      <div class="profile-username" id="profileUsername">@filip_cyclist</div>
+      
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-primary flex-1" onclick="showModal('editProfileModal')">
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+        <button class="btn btn-secondary flex-1" onclick="shareProfile()">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="profileRides">24</div>
+        <div class="stat-label">Total Rides</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="profileTime">127h</div>
+        <div class="stat-label">Total Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="profileAchievements">42</div>
+        <div class="stat-label">Achievements</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Recent Achievements</div>
+      <div id="achievementsList">
+        <!-- Achievements will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div id="timer" class="page no-navbar">
+    <div class="header">
+      <button class="btn btn-secondary" onclick="showPage('home')">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <div style="font-weight: 600; font-size: 18px;">Adventure Timer</div>
+      <div style="width: 60px;"></div>
+    </div>
+
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    
+    <div style="text-align: center; color: #6b7280; margin-bottom: 40px;">
+      <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
+      <span id="locationText">Koper, Slovenia</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="timerDistance">0.0</div>
+        <div class="stat-label">Distance (km)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="timerElevation">0</div>
+        <div class="stat-label">Elevation (m)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="timerSpeed">0.0</div>
+        <div class="stat-label">Avg Speed</div>
+      </div>
+    </div>
+
+
+    <!-- Bottom Controls Section -->
+    <div class="bottom-controls-container">
+      <!-- Left Side: Stop Button -->
+      <div class="side-control left-control" id="stopControl">
+        <button class="btn btn-control-stop" onclick="stopTimer()">
+          <i class="fas fa-stop"></i>
+          <span>Stop</span>
+        </button>
+      </div>
+      
+      <!-- Center: Capture Button -->
+      <div class="center-control">
+        <button class="btn btn-control-capture" onclick="showModal('captureModal')">
+          <i class="fas fa-camera"></i>
+          <span>Capture</span>
+        </button>
+      </div>
+      
+      <!-- Right Side: Start/Pause Button -->
+      <div class="side-control right-control" id="timerControl">
+        <button class="btn btn-control-start" onclick="toggleTimer()" id="timerToggleBtn">
+          <i class="fas fa-play"></i>
+          <span>Start</span>
+        </button>
+      </div>
+    </div>
+
+    
+  </div>
+  
+
+  <!-- LOCATION DETECTED -->
+  <div id="location" class="page no-navbar">
+    <div class="header">
+      <button class="btn btn-secondary" onclick="showPage('timer')">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <div style="font-weight: 600; font-size: 18px;">Location</div>
+      <div style="width: 60px;"></div>
+    </div>
+
+    <div style="text-align: center; margin: 60px 0;">
+      <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 32px;">
+        <i class="fas fa-check" style="color: white; font-size: 48px;"></i>
+      </div>
+      <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Location Found!</h2>
+      <div style="color: #059669; font-size: 18px; font-weight: 600;">
+        <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
+        <span id="detectedLocation">Koper, Slovenia</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: center;">
+        <div>
+          <div style="color: #6b7280; font-size: 14px; margin-bottom: 4px;">Latitude</div>
+          <div style="font-weight: 700;" id="latitude">45.7769° N</div>
+        </div>
+        <div>
+          <div style="color: #6b7280; font-size: 14px; margin-bottom: 4px;">Longitude</div>
+          <div style="font-weight: 700;" id="longitude">14.2167° E</div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <div style="color: #6b7280; font-size: 14px; margin-bottom: 4px;">Elevation</div>
+        <div style="font-weight: 700;" id="elevation">554 m</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-full mt-8" onclick="showPage('timer')">
+      Start Adventure
+    </button>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="settings" class="page">
+    <div class="header">
+      <button class="btn btn-secondary" onclick="showPage('profile')">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <div style="font-weight: 600; font-size: 18px;">Settings</div>
+      <div style="width: 60px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Account Settings</div>
+      
+      <div style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Email</div>
+        <div style="color: #6b7280;" id="settingsEmail">filip@example.com</div>
+      </div>
+      
+      <div style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Notifications</div>
+        <div style="color: #6b7280;">Enabled</div>
+      </div>
+      
+      <div style="padding: 12px 0;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Privacy</div>
+        <div style="color: #6b7280;">Friends only</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">About</div>
+      <p style="color: #6b7280; margin-bottom: 16px;">CycleStory v1.0.0</p>
+      <button class="btn btn-secondary w-full" onclick="alert('Check for updates clicked')">
+        Check for Updates
+      </button>
+    </div>
+
+    <button class="btn btn-danger w-full" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Log Out
+    </button>
+  </div>
+
+  <!-- MODALS -->
+  <!-- New Journey Modal -->
+  <div class="modal-overlay" id="newJourneyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">New Journey</div>
+        <button class="modal-close" onclick="hideModal('newJourneyModal')">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Journey Name</label>
+        <input type="text" class="form-input" id="journeyName" placeholder="Enter journey name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-input" id="journeyLocation" placeholder="Enter location">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration (hours)</label>
+        <input type="number" class="form-input" id="journeyDuration" placeholder="Enter duration">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Distance (km)</label>
+        <input type="number" class="form-input" id="journeyDistance" placeholder="Enter distance">
+      </div>
+      <button class="btn btn-primary w-full" onclick="addNewJourney()">Add Journey</button>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Profile</div>
+        <button class="modal-close" onclick="hideModal('editProfileModal')">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" id="editName" placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="editUsername" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="editEmail" placeholder="Enter your email">
+      </div>
+      <button class="btn btn-primary w-full" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Add Friend Modal -->
+  <div class="modal-overlay" id="addFriendModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Add Friend</div>
+        <button class="modal-close" onclick="hideModal('addFriendModal')">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Friend's Email or Username</label>
+        <input type="text" class="form-input" id="friendSearch" placeholder="Enter email or username">
+      </div>
+      <button class="btn btn-primary w-full" onclick="addFriend()">Send Friend Request</button>
+    </div>
+  </div>
+
+  <!-- Capture Modal -->
+  <div class="modal-overlay" id="captureModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Capture Moment</div>
+        <button class="modal-close" onclick="hideModal('captureModal')">×</button>
+      </div>
+      
+      <div class="capture-options">
+        <div class="capture-option active" onclick="selectCaptureType('camera')">
+          <div class="capture-icon">
+            <i class="fas fa-camera"></i>
+          </div>
+          <div class="capture-label">Photo</div>
+          <div class="capture-desc">Take a photo</div>
+        </div>
+        
+        <div class="capture-option" onclick="selectCaptureType('video')">
+          <div class="capture-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <div class="capture-label">Video</div>
+          <div class="capture-desc">Record video</div>
+        </div>
+        
+        <div class="capture-option" onclick="selectCaptureType('audio')">
+          <div class="capture-icon">
+            <i class="fas fa-microphone"></i>
+          </div>
+          <div class="capture-label">Audio</div>
+          <div class="capture-desc">Record audio note</div>
+        </div>
+      </div>
+      
+      <!-- Preview Area -->
+      <div class="preview-area">
+        <div class="preview-placeholder" id="previewPlaceholder">
+          <i class="fas fa-camera"></i>
+          <div>Preview will appear here</div>
+        </div>
+        <video class="preview-content" id="videoPreview" controls></video>
+        <img class="preview-content" id="imagePreview" alt="Preview">
+        <audio class="preview-content" id="audioPreview" controls></audio>
+      </div>
+      
+      <!-- Camera Controls -->
+      <div class="controls" id="cameraControls">
+        <button class="control-button secondary" onclick="switchCamera()">
+          <i class="fas fa-sync-alt"></i> Switch
+        </button>
+        <button class="control-button primary" onclick="takePhoto()">
+          <i class="fas fa-camera"></i> Take Photo
+        </button>
+        <button class="control-button danger" onclick="stopCapture()">
+          <i class="fas fa-stop"></i> Stop
+        </button>
+      </div>
+      
+      <!-- Video Controls -->
+      <div class="controls hidden" id="videoControls">
+        <button class="control-button secondary" onclick="switchCamera()">
+          <i class="fas fa-sync-alt"></i> Switch
+        </button>
+        <button class="control-button primary" onclick="startRecording()" id="startRecordBtn">
+          <i class="fas fa-video"></i> Start Recording
+        </button>
+        <button class="control-button danger hidden" onclick="stopRecording()" id="stopRecordBtn">
+          <i class="fas fa-stop"></i> Stop
+        </button>
+      </div>
+      
+      <!-- Audio Controls -->
+      <div class="controls hidden" id="audioControls">
+        <button class="control-button primary" onclick="startAudioRecording()" id="startAudioBtn">
+          <i class="fas fa-microphone"></i> Start Recording
+        </button>
+        <button class="control-button danger hidden" onclick="stopAudioRecording()" id="stopAudioBtn">
+          <i class="fas fa-stop"></i> Stop
+        </button>
+        <button class="control-button secondary" onclick="playAudioPreview()">
+          <i class="fas fa-play"></i> Play
+        </button>
+      </div>
+      
+      <!-- Gallery Section -->
+      <div class="media-grid" id="mediaGallery">
+        <!-- Media items will be added here -->
+      </div>
+      
+      <div class="text-center mt-8">
+        <button class="btn btn-outline w-full" onclick="hideModal('captureModal')">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <div id="navbar">
+    <div id="navbar_home" class="nav-btn active" onclick="showPage('home', this)">
+      <i class="fas fa-house"></i>Home
+    </div>
+    <div class="nav-btn" onclick="showPage('adventures', this)">
+      <i class="fas fa-route"></i>Journeys
+    </div>
+    <div class="nav-btn" onclick="showPage('friends', this)">
+      <i class="fas fa-user-group"></i>Friends
+    </div>
+    <div class="nav-btn" onclick="showPage('profile', this)">
+      <i class="fas fa-user"></i>Profile
+    </div>
+  </div>
+
+  <script>
+  // Data storage
+  
+  let currentPage = 'login';
+  let timerInterval;
+  let timerSeconds = 0;
+  let isTimerRunning = false;
+  let journeys = [
+    {
+      id: 1,
+      title: "Mountain Challenge",
+      location: "Postojna",
+      date: "Jan 15, 2026",
+      duration: "2h 15m",
+      distance: "25km",
+      icon: "fas fa-mountain"
+    },
+    {
+      id: 2,
+      title: "Forest Trail",
+      location: "Ankaran",
+      date: "Jan 12, 2026",
+      duration: "1h 45m",
+      distance: "15km",
+      icon: "fas fa-tree"
+    }
+  ];
+
+  let friends = [
+    {
+      id: 1,
+      name: "Luka Kovac",
+      activity: "3km today 🔥",
+      color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+    },
+    {
+      id: 2,
+      name: "Zan Miskar",
+      activity: "5km today 🔥",
+      color: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
+    }
+  ];
+
+  let achievements = [
+    {
+      id: 1,
+      title: "Century Club",
+      description: "Completed 100 hours of cycling",
+      date: "Jan 18",
+      icon: "🏆"
+    },
+    {
+      id: 2,
+      title: "Distance Master",
+      description: "Cycled 500km total",
+      date: "Jan 10",
+      icon: "🚴"
+    }
+  ];
+
+  // Capture System Variables
+  let currentCaptureType = 'camera';
+  let mediaStream = null;
+  let mediaRecorder = null;
+  let recordedChunks = [];
+  let audioRecorder = null;
+  let audioChunks = [];
+  let capturedMediaPlaceHolder = [
+    {
+      id: 1,
+      type: 'photo',
+      url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+      title: 'Mountain View',
+      timestamp: '2 hours ago'
+    },
+    {
+      id: 2,
+      type: 'video',
+      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      title: 'Trail Video',
+      timestamp: '1 day ago'
+    },
+    {
+      id: 3,
+      type: 'audio',
+      url: '#',
+      title: 'Ride Notes',
+      timestamp: '3 days ago'
+    }
+  ];
+  let capturedMedia = [];  
+  let WoZ = false;
+
+  var beforePage = document.getElementById('login');
+
+  function showMomentDetected() {
+    showPage('momentDetected');
+  }
+
+  // Function to capture the moment
+  function captureMoment() {
+    // Add your capture logic here
+    showModal('captureModal')
+    
+    // Show success message or go back to timer
+    //showPage('timer');
+  }
+
+  // Optional: Auto-show this page when a moment is detected
+  // You can call this from your location/timer logic
+  function detectMomentPoint() {
+    // Your detection logic here...
+    showMomentDetected();
+  }
+
+
+  // Page Navigation
+  function showPage(id, el) {
+    const pages = document.querySelectorAll('.page');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const navbar = document.getElementById('navbar');
+    const activePage = document.getElementById(id);
+    
+    pages.forEach(page => page.classList.remove('active'));
+    activePage.classList.add('active');
+    
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    
+    if (el) {
+      el.classList.add('active');
+    } else if (beforePage.classList.contains('no-navbar') && !activePage.classList.contains('no-navbar')) {
+      document.getElementById('navbar_home').classList.add('active');
+    }
+    
+    navbar.style.display = activePage.classList.contains('no-navbar') ? 'none' : 'flex';
+    currentPage = id;
+    
+    // Update content for specific pages
+    if (id === 'timer') {
+      document.getElementById('locationText').textContent = 'Koper, Slovenia';
+      setTimeout(() => {
+        document.getElementById('locationText').textContent = 'Koper, Slovenia';
+      }, 2000);
+    } else if (id === 'adventures') {
+      updateJourneysList();
+    } else if (id === 'friends') {
+      updateFriendsList();
+    } else if (id === 'profile') {
+      updateProfile();
+    } else if (id === 'home') {
+      updateHomeStats();
+    }
+    
+    beforePage = activePage;
+  }
+
+  // Modal Functions
+  function showModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+    
+    if (modalId === 'captureModal') {
+      initializeCapture();
+      updateMediaGallery();
+    }
+  }
+
+  function hideModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+    
+    if (modalId === 'captureModal') {
+      stopAllMedia();
+    }
+  }
+
+  // Login Function
+  function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (email && password) {
+      showPage('home');
+    } else {
+      alert('Please enter both email and password');
+    }
+  }
+
+  // Logout Function
+  function logout() {
+    showPage('login');
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+  }
+
+  // Timer Functions
+  function notificationTimer() {
+    if (WoZ) {
+      return;
+    }
+
+      WoZ = true;
+    detectMomentPoint()
+  }
+
+  function toggleTimer() {
+    const notifTimer = setTimeout(() => {
+      notificationTimer();
+    }, 60000);
+
+
+    const timerBtn = document.getElementById('timerToggleBtn');
+    
+    if (!isTimerRunning) {
+      // Start the timer
+      isTimerRunning = true;
+      
+      // Update toggle button to pause
+      timerBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+      timerBtn.className = 'btn btn-control-pause';
+      timerBtn.onclick = toggleTimer;
+      
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        updateTimerDisplay();
+        updateTimerStats();
+      }, 1000);
+      
+      // Update ride status
+      document.getElementById('rideBtnActive').children[0].innerText = "Back to ride";
+      document.getElementById('rideBtnActive').children[1].innerText = "Tracking your adventure";
+    } else {
+      // Pause the timer
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      
+      // Update toggle button to resume
+      timerBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
+      timerBtn.className = 'btn btn-control-start';
+      timerBtn.onclick = toggleTimer;
+      
+      // Update ride status
+      document.getElementById('rideBtnActive').children[0].innerText = "Paused";
+      document.getElementById('rideBtnActive').children[1].innerText = "Timer is paused";
+    }
+  } 
+
+
+  function stopTimer() {
+      clearInterval(timerInterval);
+      
+      // Add the completed journey
+      addCompletedJourney();
+      
+      // Reset timer
+      timerSeconds = 0;
+      updateTimerDisplay();
+      resetTimerStats();
+      
+   
+      showPage('adventures');
+      
+      document.getElementById('rideBtnActive').children[0].innerText="Start new ride";
+      document.getElementById('rideBtnActive').children[1].innerText="Begin tracking your adventure";
+    
+  }
+
+
+  function updateTimerDisplay() {
+    const hours = Math.floor(timerSeconds / 3600);
+    const minutes = Math.floor((timerSeconds % 3600) / 60);
+    const seconds = timerSeconds % 60;
+    
+    document.getElementById('timerDisplay').textContent = 
+      `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function updateTimerStats() {
+    const distance = (timerSeconds * 0.003).toFixed(1);
+    const speed = timerSeconds > 0 ? (distance / (timerSeconds / 3600)).toFixed(1) : '0.0';
+    const elevation = Math.floor(timerSeconds * 0.1);
+    
+    document.getElementById('timerDistance').textContent = distance;
+    document.getElementById('timerSpeed').textContent = speed;
+    document.getElementById('timerElevation').textContent = elevation;
+  }
+
+  function resetTimerStats() {
+    document.getElementById('timerDistance').textContent = '0.0';
+    document.getElementById('timerSpeed').textContent = '0.0';
+    document.getElementById('timerElevation').textContent = '0';
+  }
+
+  // Journey Functions
+  function addCompletedJourney() {
+    const hours = Math.floor(timerSeconds / 3600);
+    const minutes = Math.floor((timerSeconds % 3600) / 60);
+    const duration = `${hours}h ${minutes}m`;
+    const distance = (timerSeconds * 0.003).toFixed(1);
+    
+    // Get ALL media types from capturedMedia array
+    const capturedMediaUrls = capturedMedia
+        .filter(media => media.type === 'photo' || media.type === 'video' || media.type === 'audio')
+        .slice(0, 5)  // Take up to 5 most recent media items
+        .map(item => item.url);  // Get just the URL
+    
+    const newJourney = {
+        id: journeys.length + 1,
+        title: `Ride ${new Date().toLocaleDateString()}`,
+        location: "Koper, Slovenia",
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        duration: duration,
+        distance: distance + "km",
+        icon: "fas fa-bicycle",
+        pictures: capturedMediaUrls  // Use ALL captured media (photos, videos, audio)
+    };
+    
+    journeys.unshift(newJourney);
+    updateJourneysList();
+    updateHomeStats();
+    updateProfileStats();
+    
+    // RESET capturedMedia to empty for next capture session
+    capturedMedia = [];
+    
+    // Also update the media gallery to show it's empty
+    //updateMediaGallery();
+}
+
+  function playVideoModal(url, index) {
+  // Create simple modal overlay
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'video-modal-overlay';
+  modalOverlay.id = 'videoModalOverlay';
+  modalOverlay.onclick = closeVideoModal; // Click anywhere to close
+  
+  // Create small video container
+  modalOverlay.innerHTML = `
+    <div class="video-container-small" onclick="event.stopPropagation()">
+      <button class="btn btn-close-video-small" onclick="closeVideoModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <video src="${url}" controls autoplay style="width: 100%; height: auto; border-radius: 8px;">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  `;
+  
+  // Add to body
+  document.body.appendChild(modalOverlay);
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModalOverlay');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+function playAudioModal(url, index) {
+  // Create simple modal overlay
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'audio-modal-overlay';
+  modalOverlay.id = 'audioModalOverlay';
+  modalOverlay.onclick = closeAudioModal; // Click anywhere to close
+  
+  // Create small audio container
+  modalOverlay.innerHTML = `
+    <div class="audio-container-small" onclick="event.stopPropagation()">
+      <button class="btn btn-close-audio-small" onclick="closeAudioModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <audio src="${url}" controls autoplay style="width: 100%;">
+        Your browser does not support the audio element.
+      </audio>
+      <div class="audio-info">
+        <i class="fas fa-volume-up" style="margin-right: 8px;"></i>
+        <span>Journey Audio</span>
+      </div>
+    </div>
+  `;
+  
+  // Add to body
+  document.body.appendChild(modalOverlay);
+}
+
+function closeAudioModal() {
+  const modal = document.getElementById('audioModalOverlay');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+
+// Update your journeys list to use the simple function
+// The HTML part remains the same, just make sure onclick calls playVideoModal(url, index)
+
+  function addNewJourney() {
+    const name = document.getElementById('journeyName').value;
+    const location = document.getElementById('journeyLocation').value;
+    const duration = document.getElementById('journeyDuration').value;
+    const distance = document.getElementById('journeyDistance').value;
+    
+    if (name && location && duration && distance) {
+      const newJourney = {
+        id: journeys.length + 1,
+        title: name,
+        location: location,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        duration: duration + "h",
+        distance: distance + "km",
+        icon: "fas fa-route"
+      };
+      
+      journeys.unshift(newJourney);
+      updateJourneysList();
+      updateHomeStats();
+      updateProfileStats();
+      
+      // Clear form and close modal
+      document.getElementById('journeyName').value = '';
+      document.getElementById('journeyLocation').value = '';
+      document.getElementById('journeyDuration').value = '';
+      document.getElementById('journeyDistance').value = '';
+      
+      hideModal('newJourneyModal');
+      alert('Journey added successfully!');
+    } else {
+      alert('Please fill in all fields');
+    }
+  }
+
+function updateJourneysList() {
+    const container = document.getElementById('journeysList');
+    container.innerHTML = '';
+    
+    journeys.forEach((journey, journeyIndex) => {
+      const journeyElement = document.createElement('div');
+      journeyElement.className = 'adventure-card';
+      journeyElement.id = `journey-${journeyIndex}`;
+      
+      // Create media row if journey has media
+      let mediaRow = '';
+      if (journey.pictures && journey.pictures.length > 0) {
+          mediaRow = `
+          <div class="adventure-pictures-row">
+            ${journey.pictures.map((url, index) => {
+                // Check what type of media it is
+                // Update the media detection logic in updateJourneysList()
+                if (url.startsWith('blob:') || url.includes('.mp4') || url.includes('.webm') || url.includes('.mov')) {
+                    // Check if it's actually a video file
+                    return `
+                    <div class="media-item-small" onclick="playVideoModal('${url}', ${index})" style="position: relative; cursor: pointer;">
+                        <div style="width: 60px; height: 60px; background: #3B82F6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div style="position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.7); color: white; padding: 1px 4px; border-radius: 4px; font-size: 10px;">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>`;
+                } else if (url.includes('data:audio') || url.includes('blob:') && url.includes('audio') || url.includes('.mp3') || url.includes('.wav') || url.includes('.m4a')) {
+                    // It's audio
+                    return `
+                    <div class="media-item-small" onclick="playAudioModal('${url}', ${index})" style="position: relative; cursor: pointer;">
+                        <div style="width: 60px; height: 60px; background: #10B981; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <div style="position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.7); color: white; padding: 1px 4px; border-radius: 4px; font-size: 10px;">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                    </div>`;
+                } else {
+                    // It's an image
+                    return `<img src="${url}" alt="Photo" class="adventure-small-picture" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">`;
+                }
+            }).join('')}
+          </div>
+          `;
+      }
+      
+      journeyElement.innerHTML = `
+        <!-- Delete Button (top right) -->
+        <button class="journey-delete-btn" onclick="deleteJourney(${journeyIndex})" title="Delete Journey">
+          <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="adventure-image">
+          <i class="${journey.icon}"></i>
+        </div>
+        <div class="adventure-content">
+          <div>
+            <div class="adventure-title">${journey.title}</div>
+            <div class="adventure-meta">
+              <div class="adventure-meta-item">
+                <i class="fas fa-map-marker-alt"></i> ${journey.location}
+              </div>
+              <div class="adventure-meta-item">
+                <i class="fas fa-calendar"></i> ${journey.date}
+              </div>
+            </div>
+          </div>
+          <div class="adventure-footer">
+            <div class="adventure-duration">
+              <i class="fas fa-clock"></i> ${journey.duration}
+            </div>
+            <div class="status-badge">Completed</div>
+          </div>
+          ${mediaRow}
+        </div>
+      `;
+      container.appendChild(journeyElement);
+    });
+}
+
+// Function to delete a journey
+function deleteJourney(index) {
+    // Show confirmation dialog
+    
+      // Remove the journey from the array
+      journeys.splice(index, 1);
+      
+      // Refresh the journeys list
+      updateJourneysList();
+      
+  
+    
+}
+  // Profile Functions
+  function updateProfile() {
+    updateProfileStats();
+    updateAchievementsList();
+  }
+
+  function saveProfile() {
+    const name = document.getElementById('editName').value;
+    const username = document.getElementById('editUsername').value;
+    const email = document.getElementById('editEmail').value;
+    
+    if (name) {
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('profileAvatar').textContent = name.charAt(0);
+    }
+    
+    if (username) {
+      document.getElementById('profileUsername').textContent = username;
+    }
+    
+    if (email) {
+      document.getElementById('settingsEmail').textContent = email;
+    }
+    
+    hideModal('editProfileModal');
+    alert('Profile updated successfully!');
+  }
+
+  function updateProfileStats() {
+    const totalRides = journeys.length;
+    const totalHours = journeys.reduce((sum, journey) => {
+      const hours = parseFloat(journey.duration);
+      return sum + (isNaN(hours) ? 0 : hours);
+    }, 0);
+    
+    document.getElementById('profileRides').textContent = totalRides;
+    document.getElementById('profileTime').textContent = Math.round(totalHours) + 'h';
+    
+    // Update home stats as well
+    updateHomeStats();
+  }
+
+  function updateAchievementsList() {
+    const container = document.getElementById('achievementsList');
+    container.innerHTML = '';
+    
+    achievements.forEach(achievement => {
+      const achievementElement = document.createElement('div');
+      achievementElement.style.cssText = 'display: flex; align-items: center; gap: 12px; padding: 12px; background: #f0fdf4; border-radius: 12px; margin-bottom: 8px;';
+      achievementElement.innerHTML = `
+        <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+          ${achievement.icon}
+        </div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600;">${achievement.title}</div>
+          <div style="color: #6b7280; font-size: 14px;">${achievement.description}</div>
+        </div>
+        <div style="color: #6b7280; font-size: 12px;">${achievement.date}</div>
+      `;
+      container.appendChild(achievementElement);
+    });
+  }
+
+  // Home Functions
+  function updateHomeStats() {
+    const totalRides = journeys.length;
+    const totalHours = journeys.reduce((sum, journey) => {
+      const hours = parseFloat(journey.duration);
+      return sum + (isNaN(hours) ? 0 : hours);
+    }, 0);
+    const totalDistance = journeys.reduce((sum, journey) => {
+      const distance = parseFloat(journey.distance);
+      return sum + (isNaN(distance) ? 0 : distance);
+    }, 0);
+    
+    document.getElementById('homeJourneys').textContent = totalRides;
+    document.getElementById('homeTime').textContent = Math.round(totalHours) + 'h';
+    document.getElementById('homeDistance').textContent = Math.round(totalDistance) + 'km';
+    
+    updateRecentActivity();
+  }
+
+  function updateRecentActivity() {
+    const container = document.getElementById('recentActivity');
+    container.innerHTML = '';
+    
+    // Show recent journeys
+    const recentJourneys = journeys.slice(0, 2);
+    
+    recentJourneys.forEach((journey, index) => {
+      const activityElement = document.createElement('div');
+      activityElement.style.cssText = 'display: flex; gap: 12px; margin-bottom: 12px;';
+      activityElement.innerHTML = `
+        <div style="width: 60px; height: 60px; background: #dcfce7; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-clock" style="color: #059669; font-size: 24px;"></i>
+        </div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600;">${journey.title}</div>
+          <div style="color: #6b7280; font-size: 14px;">${journey.duration} adventure</div>
+        </div>
+        <div style="color: #6b7280; font-size: 14px;">${index === 0 ? 'Today' : '1d ago'}</div>
+      `;
+      container.appendChild(activityElement);
+    });
+  }
+
+  // Friends Functions
+  function updateFriendsList() {
+    const container = document.getElementById('friendsList');
+    container.innerHTML = '';
+    
+    friends.forEach(friend => {
+      const friendElement = document.createElement('div');
+      friendElement.style.cssText = 'display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e5e7eb;';
+      friendElement.innerHTML = `
+        <div style="width: 50px; height: 50px; background: ${friend.color}; border-radius: 50%;"></div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600;">${friend.name}</div>
+          <div style="color: #6b7280; font-size: 14px;">${friend.activity}</div>
+        </div>
+        
+      `;
+      container.appendChild(friendElement);
+    });
+  }
+
+  function addFriend() {
+    const friendSearch = document.getElementById('friendSearch').value;
+    
+    if (friendSearch) {
+      const newFriend = {
+        id: friends.length + 1,
+        name: friendSearch.split('@')[0],
+        activity: "0km today",
+        color: "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+      };
+      
+      friends.push(newFriend);
+      updateFriendsList();
+      
+      document.getElementById('friendSearch').value = '';
+      hideModal('addFriendModal');
+      alert('Friend request sent!');
+    } else {
+      alert('Please enter a username or email');
+    }
+  }
+
+  // Capture System Functions
+  function selectCaptureType(type) {
+    currentCaptureType = type;
+    
+    // Update active state
+    document.querySelectorAll('.capture-option').forEach(option => {
+      option.classList.remove('active');
+    });
+    document.querySelector(`.capture-option[onclick*="${type}"]`).classList.add('active');
+    
+    // Show/hide controls
+    document.getElementById('cameraControls').classList.add('hidden');
+    document.getElementById('videoControls').classList.add('hidden');
+    document.getElementById('audioControls').classList.add('hidden');
+    
+    // Hide all previews
+    document.getElementById('previewPlaceholder').style.display = 'flex';
+    document.getElementById('videoPreview').classList.remove('active');
+    document.getElementById('imagePreview').classList.remove('active');
+    document.getElementById('audioPreview').classList.remove('active');
+    
+    // Stop any ongoing media
+    stopAllMedia();
+    
+    // Initialize new capture type
+    if (type === 'camera') {
+      document.getElementById('cameraControls').classList.remove('hidden');
+      initializeCamera();
+    } else if (type === 'video') {
+      document.getElementById('videoControls').classList.remove('hidden');
+      initializeCamera();
+    } else if (type === 'audio') {
+      document.getElementById('audioControls').classList.remove('hidden');
+    }
+  }
+
+  function initializeCapture() {
+    selectCaptureType('camera');
+  }
+
+
+  let currentCamera = 'environment'; // 'environment' for back, 'user' for front
+
+function switchCamera() {
+    // Toggle between front and back cameras
+    if (currentCamera === 'environment') {
+        currentCamera = 'user'; // Switch to front camera
+    } else {
+        currentCamera = 'environment'; // Switch to back camera
+    }
+    
+    // Reinitialize camera with new facing mode
+    initializeCamera();
+}
+
+async function initializeCamera() {
+    try {
+        stopAllMedia();
+        
+        const constraints = {
+            video: {
+                facingMode: currentCamera,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: currentCaptureType === 'video' || currentCaptureType === 'audio'
+        };
+        
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+        
+        if (currentCaptureType === 'camera' || currentCaptureType === 'video') {
+            const videoPreview = document.getElementById('videoPreview');
+            videoPreview.srcObject = mediaStream;
+            videoPreview.classList.add('active');
+            document.getElementById('previewPlaceholder').style.display = 'none';
+            videoPreview.play();
+            
+            // Update camera icon based on current camera
+            updateCameraIcon();
+        }
+    } catch (error) {
+        console.error('Error accessing media devices:', error);
+        
+        // Fallback to default if specific facingMode fails
+        if (error.name === 'OverconstrainedError') {
+            alert('This camera mode is not available. Using default camera.');
+            currentCamera = { exact: 'environment' }; // Try exact constraint
+            setTimeout(initializeCamera, 100);
+        } else {
+            alert('Could not access camera. Please check permissions.');
+        }
+    }
+}
+
+  function takePhoto() {
+    if (!mediaStream) {
+      alert('Camera not initialized. Please try again.');
+      return;
+    }
+    
+    const video = document.getElementById('videoPreview');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const imageUrl = canvas.toDataURL('image/png');
+    
+    // Show image preview
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.src = imageUrl;
+    imagePreview.classList.add('active');
+    document.getElementById('videoPreview').classList.remove('active');
+    
+    // Add to media gallery
+    const newMedia = {
+      id: capturedMedia.length + 1,
+      type: 'photo',
+      url: imageUrl,
+      title: `Photo ${new Date().toLocaleTimeString()}`,
+      timestamp: 'Just now'
+    };
+    
+    capturedMedia.unshift(newMedia);
+    updateMediaGallery();
+    
+    alert('Photo captured successfully!');
+  }
+
+  function startRecording() {
+    if (!mediaStream) {
+      alert('Camera not initialized. Please try again.');
+      return;
+    }
+    
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(mediaStream);
+    
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        recordedChunks.push(event.data);
+      }
+    };
+    
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const videoUrl = URL.createObjectURL(blob);
+      
+      // Show video preview
+      const videoPreview = document.getElementById('videoPreview');
+      videoPreview.src = videoUrl;
+      videoPreview.srcObject = null;
+      videoPreview.classList.add('active');
+      videoPreview.controls = true;
+      
+      // Add to media gallery
+      const newMedia = {
+        id: capturedMedia.length + 1,
+        type: 'video',
+        url: videoUrl,
+        title: `Video ${new Date().toLocaleTimeString()}`,
+        timestamp: 'Just now'
+      };
+      
+      capturedMedia.unshift(newMedia);
+      updateMediaGallery();
+      
+      alert('Video recorded successfully!');
+    };
+    
+    mediaRecorder.start();
+    
+    // Update UI
+    document.getElementById('startRecordBtn').classList.add('hidden');
+    document.getElementById('stopRecordBtn').classList.remove('hidden');
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+    }
+    
+    // Stop all tracks
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+    }
+    
+    // Update UI
+    document.getElementById('startRecordBtn').classList.remove('hidden');
+    document.getElementById('stopRecordBtn').classList.add('hidden');
+  }
+
+  function startAudioRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        audioRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        
+        audioRecorder.ondataavailable = (event) => {
+          audioChunks.push(event.data);
+        };
+        
+        audioRecorder.onstop = () => {
+          const blob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(blob);
+          
+          // Show audio preview
+          const audioPreview = document.getElementById('audioPreview');
+          audioPreview.src = audioUrl;
+          audioPreview.classList.add('active');
+          document.getElementById('previewPlaceholder').style.display = 'none';
+          
+          // Add to media gallery
+          const newMedia = {
+            id: capturedMedia.length + 1,
+            type: 'audio',
+            url: audioUrl,
+            title: `Audio Note ${new Date().toLocaleTimeString()}`,
+            timestamp: 'Just now'
+          };
+          
+          capturedMedia.unshift(newMedia);
+          updateMediaGallery();
+          
+          alert('Audio recorded successfully!');
+          
+          // Stop all tracks
+          stream.getTracks().forEach(track => track.stop());
+        };
+        
+        audioRecorder.start();
+        
+        // Update UI
+        document.getElementById('startAudioBtn').classList.add('hidden');
+        document.getElementById('stopAudioBtn').classList.remove('hidden');
+      })
+      .catch(error => {
+        console.error('Error accessing microphone:', error);
+        alert('Could not access microphone. Please check permissions.');
+      });
+  }
+
+  function stopAudioRecording() {
+    if (audioRecorder && audioRecorder.state !== 'inactive') {
+      audioRecorder.stop();
+    }
+    
+    // Update UI
+    document.getElementById('startAudioBtn').classList.remove('hidden');
+    document.getElementById('stopAudioBtn').classList.add('hidden');
+  }
+
+  function playAudioPreview() {
+    const audioPreview = document.getElementById('audioPreview');
+    if (audioPreview.src) {
+      audioPreview.play();
+    }
+  }
+
+  function stopAllMedia() {
+    // Stop media stream
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      mediaStream = null;
+    }
+    
+    // Stop media recorder
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+      mediaRecorder = null;
+    }
+    
+    // Stop audio recorder
+    if (audioRecorder && audioRecorder.state !== 'inactive') {
+      audioRecorder.stop();
+      audioRecorder = null;
+    }
+    
+    // Reset UI
+    document.getElementById('startRecordBtn').classList.remove('hidden');
+    document.getElementById('stopRecordBtn').classList.add('hidden');
+    document.getElementById('startAudioBtn').classList.remove('hidden');
+    document.getElementById('stopAudioBtn').classList.add('hidden');
+  }
+
+  function updateMediaGallery() {
+    const container = document.getElementById('mediaGallery');
+    container.innerHTML = '';
+    
+    capturedMedia.forEach(media => {
+      const mediaElement = document.createElement('div');
+      mediaElement.className = 'media-item';
+      mediaElement.onclick = () => previewMedia(media);
+      
+      if (media.type === 'photo') {
+        mediaElement.innerHTML = `
+          <img src="${media.url}" class="media-thumbnail" alt="${media.title}">
+          <div class="media-overlay">
+            <i class="fas fa-camera"></i> ${media.title}
+          </div>
+        `;
+      } else if (media.type === 'video') {
+        mediaElement.innerHTML = `
+          <video class="media-thumbnail" poster="https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80">
+            <source src="${media.url}" type="video/webm">
+          </video>
+          <div class="media-overlay">
+            <i class="fas fa-video"></i> ${media.title}
+          </div>
+        `;
+      } else if (media.type === 'audio') {
+        mediaElement.innerHTML = `
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-microphone" style="color: white; font-size: 32px;"></i>
+          </div>
+          <div class="media-overlay">
+            <i class="fas fa-microphone"></i> ${media.title}
+          </div>
+        `;
+      }
+      
+      container.appendChild(mediaElement);
+    });
+  }
+
+  function previewMedia(media) {
+    if (media.type === 'photo') {
+      document.getElementById('imagePreview').src = media.url;
+      document.getElementById('imagePreview').classList.add('active');
+      document.getElementById('videoPreview').classList.remove('active');
+      document.getElementById('audioPreview').classList.remove('active');
+      document.getElementById('previewPlaceholder').style.display = 'none';
+    } else if (media.type === 'video') {
+      document.getElementById('videoPreview').src = media.url;
+      document.getElementById('videoPreview').srcObject = null;
+      document.getElementById('videoPreview').controls = true;
+      document.getElementById('videoPreview').classList.add('active');
+      document.getElementById('imagePreview').classList.remove('active');
+      document.getElementById('audioPreview').classList.remove('active');
+      document.getElementById('previewPlaceholder').style.display = 'none';
+    } else if (media.type === 'audio') {
+      document.getElementById('audioPreview').src = media.url;
+      document.getElementById('audioPreview').classList.add('active');
+      document.getElementById('videoPreview').classList.remove('active');
+      document.getElementById('imagePreview').classList.remove('active');
+      document.getElementById('previewPlaceholder').style.display = 'none';
+    }
+  }
+
+  // Utility Functions
+  function shareProfile() {
+    const name = document.getElementById('profileName').textContent;
+    const username = document.getElementById('profileUsername').textContent;
+    alert(`Sharing ${name}'s profile (${username})!`);
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    navbar.style.display = 'none';
+    
+    // Set initial data
+    updateJourneysList();
+    updateFriendsList();
+    updateProfile();
+    updateHomeStats();
+    updateMediaGallery();
+    
+    // Close modals when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+          stopAllMedia();
+        }
+      });
+    });
+  });
+  </script>
+  </body>
+  </html>
