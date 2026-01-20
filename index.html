@@ -2512,11 +2512,11 @@ async function initializeCamera() {
         
         // Fallback to default if specific facingMode fails
         if (error.name === 'OverconstrainedError') {
-            alert('This camera mode is not available. Using default camera.');
+            //alert('This camera mode is not available. Using default camera.');
             currentCamera = { exact: 'environment' }; // Try exact constraint
             setTimeout(initializeCamera, 100);
         } else {
-            alert('Could not access camera. Please check permissions.');
+            //alert('Could not access camera. Please check permissions.');
         }
     }
 }
